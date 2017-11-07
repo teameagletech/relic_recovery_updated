@@ -16,6 +16,11 @@ public class EagleTechOpMode extends OpMode {
     private DcMotor pullMotor;
     private Servo rightHand, leftHand;
 
+    private double rightHandClosedPosition = 0.518;
+    private double leftHandClosedPosition = 0.523;
+    private int pullMotorMaxTurn = 7750;
+    private int pullMotorMinTurn = 0;
+
     @Override
     public void init() {
 
@@ -25,7 +30,7 @@ public class EagleTechOpMode extends OpMode {
 
         rightHand = hardwareMap.servo.get("rightHand");
         leftHand = hardwareMap.servo.get("leftHand");
-        rightHand.setPosition(0.5);
+        rightHand.setPosition(0);
         leftHand.setPosition(1);
 
     }
@@ -37,18 +42,23 @@ public class EagleTechOpMode extends OpMode {
         rightDrive.setPower(-gamepad1.right_stick_y);
 
         if(gamepad1.left_bumper) {
-            rightHand.setPosition(0.9);
-            leftHand.setPosition(0.1);
+            rightHand.setPosition(rightHandClosedPosition);
+            leftHand.setPosition(leftHandClosedPosition);
         } else {
-            rightHand.setPosition(0.1);
+            rightHand.setPosition(0);
             leftHand.setPosition(1);
         }
         if(gamepad1.dpad_up) {
-            pullMotor.setPower(0.5);
+            if(pullMotor.getCurrentPosition() < pullMotorMaxTurn) {
+                pullMotor.setPower(0.5);
+            }
         } else if(gamepad1.dpad_down) {
-            pullMotor.setPower(-0.5);
+            if(pullMotor.getCurrentPosition() > pullMotorMinTurn) {
+                pullMotor.setPower(-0.5);
+            }
         } else {
             pullMotor.setPower(0);
         }
+        telemetry.addData("Pull Motor Position", pullMotor.getCurrentPosition());
     }
 }
