@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by ishanarya on 11/6/17.
  */
 
-@TeleOp(name = "EagleTechOpMode")
-public class EagleTechOpMode extends OpMode {
+@TeleOp(name = "EchoOp")
+public class EchoOp extends OpMode {
 
     private DcMotor rightDrive, leftDrive;
     private DcMotor pullMotor;
