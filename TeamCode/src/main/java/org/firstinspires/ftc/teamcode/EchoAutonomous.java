@@ -34,6 +34,8 @@ public class EchoAutonomous extends VisionOpMode {
 
     int ballDirection = 0;
 
+    boolean secondaryInitDone = false;
+
     private final int WIDTH = 600;
 
     @Override
@@ -41,8 +43,21 @@ public class EchoAutonomous extends VisionOpMode {
         super.init();
         this.setCamera(Cameras.PRIMARY);
         this.setFrameSize(new Size(WIDTH, 400));
+    }
 
-        // Vuforia setup code
+    @Override
+    public void start() {
+        resetStartTime();
+    }
+
+    private void secondaryInit() {
+        // disable opencv
+        openCVCamera.disableView();
+        openCVCamera.disconnectCamera();
+        sensors.stop();
+        openCVCamera = null;
+
+        // start vuforia
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.vuforiaLicenseKey = "AViOO0H/////AAAAGdOe07SFvkp9o8ayO1bk4XuDzjkGt9iAYhWO7gNOXYyRgcKIqt/Emv1z47NNWKJrRJahGxnoOUYzDaTvKspZCbeAuvna+XJbdvJoECZ1DDEdo/iwXL55N39Y7Jv6veJKnr4FycQROZGBU+r0Ac/EfMomkWXulsarNQuTMLiHIgikYqf+sfjVx1CO648O3WOtPEfTrfPmJB/rvo2NqG8kLmZ218EhwXgWsEGoqb3e24WJimftXKRXuH/4VzIiQLj8p+K84LurwqJjGnq8q3RRzaUCcgrLnQ1RoqA0FT7+OLIRbMkxJCfHnvqsgeKTzJCcjJX5oJPR2jYubleXblt+VKpQ43t6x5/yLYSbRFy9bYoH";
@@ -53,28 +68,26 @@ public class EchoAutonomous extends VisionOpMode {
         relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate");
 
-        wm1 = hardwareMap.dcMotor.get("wm1");
-        wm2 = hardwareMap.dcMotor.get("wm2");
-
-
-    }
-
-    @Override
-    public void start() {
         relicTrackables.activate();
-        resetStartTime();
+
+        secondaryInitDone = true;
     }
 
     @Override
     public void loop() {
         super.loop();
-
-        patternDirection = RelicRecoveryVuMark.from(relicTemplate);
+        if (getRuntime() < 10) {
+            telemetry.addData("Ball Direction", "Left: %b | Right %b", ballDirection == 1, ballDirection == 2);
+        } else if (10 < getRuntime() && getRuntime() < 11 && !secondaryInitDone) {
+            secondaryInit();
+        } else {
+            patternDirection = RelicRecoveryVuMark.from(relicTemplate);
+            telemetry.addLine("Pattern: " + patternDirection.name());
+        }
         telemetry.update();
-
     }
 
-    /*
+
     @Override
     public Mat frame(Mat rgba, Mat gray) {
         rgba = super.frame(rgba, gray);
@@ -114,7 +127,7 @@ public class EchoAutonomous extends VisionOpMode {
         }
 
         return rgba;
-    } */
+    }
 
     @Override
     public void stop() {
