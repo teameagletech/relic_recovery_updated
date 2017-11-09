@@ -85,6 +85,11 @@ public class EchoOp extends OpMode {
         } else {
             pullMotor.setPower(0);
         }
+
+        if(gamepad1.y) {
+            pullMotor.resetDeviceConfigurationForOpMode();
+        }
+
         telemetry.addData("Pull Motor Position", pullMotor.getCurrentPosition());
     }
 }
