@@ -39,8 +39,8 @@ public class EchoAutonomous extends VisionOpMode {
     @Override
     public void init() {
         super.init();
-        setCamera(Cameras.PRIMARY);
-        setFrameSize(new Size(WIDTH, 400));
+        this.setCamera(Cameras.PRIMARY);
+        this.setFrameSize(new Size(WIDTH, 400));
 
         // Vuforia setup code
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -68,9 +68,8 @@ public class EchoAutonomous extends VisionOpMode {
     @Override
     public void loop() {
         super.loop();
+
         patternDirection = RelicRecoveryVuMark.from(relicTemplate);
-
-
         telemetry.update();
 
     }
