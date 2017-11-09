@@ -21,8 +21,8 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name = "EagleTechAutonomous")
-public class EagleTechAutonomous extends VisionOpMode {
+@Autonomous(name = "EchoAutonomous")
+public class EchoAutonomous extends VisionOpMode {
 
     VuforiaLocalizer vuforia;
     VuforiaTrackables relicTrackables;
