@@ -18,7 +18,11 @@ public class EagleTechOpMode extends OpMode {
 
     private double rightHandClosedPosition = 0.518;
     private double leftHandClosedPosition = 0.523;
-    private int pullMotorMaxTurn = 7750;
+    private int pullMotorMaxTurn = 8000;
+    private int pullMotorEnd1 = 7600;
+    private int pullMotorEnd2 = 7000;
+    private int pullMotorStart2 = 1000;
+    private int pullMotorStart1 = 400;
     private int pullMotorMinTurn = 0;
 
     @Override
@@ -48,13 +52,35 @@ public class EagleTechOpMode extends OpMode {
             rightHand.setPosition(0);
             leftHand.setPosition(1);
         }
+
+        int pullMotorPosition = pullMotor.getCurrentPosition();
         if(gamepad1.dpad_up) {
-            if(pullMotor.getCurrentPosition() < pullMotorMaxTurn) {
+            if(pullMotorPosition < pullMotorStart1) {
+                pullMotor.setPower(0.25);
+            } else if(pullMotorPosition < pullMotorStart2) {
                 pullMotor.setPower(0.5);
+            } else if(pullMotorPosition < pullMotorEnd2) {
+                pullMotor.setPower(1);
+            } else if(pullMotorPosition < pullMotorEnd1) {
+                pullMotor.setPower(0.5);
+            } else if(pullMotorPosition < pullMotorMaxTurn) {
+                pullMotor.setPower(0.25);
+            } else {
+                pullMotor.setPower(0);
             }
         } else if(gamepad1.dpad_down) {
-            if(pullMotor.getCurrentPosition() > pullMotorMinTurn) {
+            if(pullMotorPosition > pullMotorEnd1) {
+                pullMotor.setPower(-0.25);
+            } else if(pullMotorPosition > pullMotorEnd2) {
                 pullMotor.setPower(-0.5);
+            } else if(pullMotorPosition > pullMotorStart2) {
+                pullMotor.setPower(-1);
+            } else if(pullMotorPosition > pullMotorStart1) {
+                pullMotor.setPower(-0.5);
+            } else if(pullMotorPosition > pullMotorMinTurn) {
+                pullMotor.setPower(-0.25);
+            } else {
+                pullMotor.setPower(0);
             }
         } else {
             pullMotor.setPower(0);
