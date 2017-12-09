@@ -12,23 +12,18 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class ServoCalibration extends OpMode {
 
 
-    private Servo rightHand, leftHand;
+    private Servo servo;
 
     @Override
     public void init() {
-        rightHand = hardwareMap.servo.get("rightHand");
-        leftHand = hardwareMap.servo.get("leftHand");
-        rightHand.setPosition(0);
-        leftHand.setPosition(1);
+        servo = hardwareMap.servo.get("servo");
     }
 
     @Override
     public void loop() {
 
-        leftHand.setPosition(Math.abs(gamepad1.left_stick_y));
-        rightHand.setPosition(Math.abs(gamepad1.right_stick_y));
-        telemetry.addData("Right Hand", rightHand.getPosition());
-        telemetry.addData("Left Hand", leftHand.getPosition());
+        servo.setPosition(Math.abs(gamepad1.left_stick_y));
+        telemetry.addData("Right Hand", servo.getPosition());
 
     }
 }

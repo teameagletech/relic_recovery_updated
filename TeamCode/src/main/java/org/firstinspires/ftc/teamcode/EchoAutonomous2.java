@@ -23,18 +23,15 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name = "EchoAutonomous")
-public class EchoAutonomous extends LinearOpMode {
+@Autonomous(name = "EchoAutonomous2")
+public class EchoAutonomous2 extends LinearOpMode {
 
 
     private DcMotor rightDrive, leftDrive;
     private DcMotor pullMotor, hand;
     private Servo pusher;
 
-    private int pullMotorStart1 = 1000;
 
-    private int handMaxPosition = 0;
-    private int handMinPosition = -150;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -44,30 +41,11 @@ public class EchoAutonomous extends LinearOpMode {
 
         waitForStart();
 
-        closeHand();
 
-        pullMotor.setTargetPosition(pullMotorStart1);
-        pullMotor.setPower(.5);
-
-
-        leftDrive.setPower(-1);
-        rightDrive.setPower(1);
+        leftDrive.setPower(1);
+        rightDrive.setPower(-1);
         Thread.sleep(2000);
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
-
-        pusher.setPosition(0);
-
-        openHand();
-
-        leftDrive.setPower(0.5);
-        rightDrive.setPower(-0.5);
-
-        Thread.sleep(250);
-
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
-        pusher.setPosition(0.5);
+        stopRobot();
 
         stop();
 
@@ -87,16 +65,6 @@ public class EchoAutonomous extends LinearOpMode {
         hand.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         pusher.setPosition(0.5);
 
-    }
-
-    private void openHand() {
-        hand.setTargetPosition(handMaxPosition);
-        hand.setPower(0.1);
-    }
-
-    private void closeHand() {
-        hand.setTargetPosition(handMinPosition);
-        hand.setPower(-0.1);
     }
 
     private void stopRobot() {

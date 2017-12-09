@@ -11,26 +11,30 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @TeleOp(name = "MotorCalibration")
 public class MotorCalibration extends OpMode {
 
-    private DcMotor pullMotor;
+    private DcMotor motor;
 
-    //Max motor turn = 7776
 
     @Override
     public void init() {
-        pullMotor = hardwareMap.dcMotor.get("pullMotor");
+        motor = hardwareMap.dcMotor.get("motor");
     }
 
     @Override
     public void loop() {
 
         if(gamepad1.dpad_up) {
-            pullMotor.setPower(0.5);
+            motor.setPower(0.5);
         } else if(gamepad1.dpad_down) {
-            pullMotor.setPower(-0.5);
+            motor.setPower(-0.5);
+        } else if(gamepad1.dpad_right) {
+            motor.setPower(0.1);
+        } else if(gamepad1.dpad_left) {
+            motor.setPower(-0.1);
         } else {
-            pullMotor.setPower(0);
+            motor.setPower(gamepad1.left_stick_y);
         }
 
-        telemetry.addData("Pull Motor Position", pullMotor.getCurrentPosition());
+        telemetry.addData("Motor Position", motor.getCurrentPosition());
+        telemetry.addData("Motor Power", motor.getPower());
     }
 }
