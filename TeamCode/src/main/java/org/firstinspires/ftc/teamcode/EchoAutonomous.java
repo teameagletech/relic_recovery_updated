@@ -43,7 +43,6 @@ public class EchoAutonomous extends LinearOpMode {
         telemetry.addData("Message", "Don't lose too hard.");
 
         waitForStart();
-
         closeHand();
 
         pullMotor.setTargetPosition(pullMotorStart1);
